@@ -1,42 +1,47 @@
 // app/feed.tsx
 import { getPhotos, getPosts, getUsers } from '@/services/api';
 import { UserPost } from '@/types/models';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, FlatList } from 'react-native';
 
-import PostCard from '@/components/PostCard';
+import PostCard from '@/components/Card/PostCard';
+import { Colors } from '@/constants/Colors';
+import { postUserHelper } from '@/helpers/postUserHelper';
 
 const FeedScreen = () => {
     const [data, setData] = useState<UserPost[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
 
     const getData = async () => {
+        setLoading(true);
         try {
-            const photos = await getPhotos();
-            const posts = await getPosts();
-            const users = await getUsers();
+            const cacheData = await AsyncStorage.getItem('data');
 
-            const userPost: UserPost[] = posts.slice(0, 30).map((post, i) => ({
-                id: post.id,
-                title: post.title,
-                imageUrl: photos[i]?.url,
-                username: users.find((u) => u.id === post.userId)?.username || 'Anonimo',
-            }));
-            
-            setData(userPost);
+            if (!cacheData) {
+                const photos = await getPhotos();
+                const posts = await getPosts();
+                const users = await getUsers();
+
+                const data = postUserHelper(posts, photos, users);
+                await AsyncStorage.setItem('data', JSON.stringify(data));
+                setData(data);
+            } else {
+                setData(JSON.parse(cacheData));
+            }
         } catch (error) {
-            console.error(error);
+            console.error('Error al cargar los datos:', error);
         } finally {
             setLoading(false);
         }
-    }
+    };
 
     useEffect(() => {
         getData();
     }, []);
 
     if (loading) {
-        return <ActivityIndicator size="large" />;
+        return <ActivityIndicator color={Colors.black} size="large" style={{ flex: 1 }} />;
     }
 
     return (

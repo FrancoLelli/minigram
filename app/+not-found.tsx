@@ -1,3 +1,4 @@
+import { Colors } from '@/constants/Colors';
 import { Link, Stack } from 'expo-router';
 import { StyleSheet, Text, View } from 'react-native';
 
@@ -26,6 +27,6 @@ const styles = StyleSheet.create({
     link: {
         marginTop: 15,
         paddingVertical: 15,
-        color: 'blue',
+        color: Colors.black,
     },
 });
