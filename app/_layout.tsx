@@ -15,8 +15,10 @@ export default function RootLayout() {
   return (
     <>
       <Stack>
+        <Stack.Screen name="(stack)/login" options={{ headerShown: false }} />
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="(stack)/post" options={{ headerTitle: '', headerBackTitle: 'Volver'}} />
+        <Stack.Screen name="(stack)/users-profile" options={{ headerTitle: '', headerBackTitle: 'Volver'}} />
         <Stack.Screen name="+not-found" options={{ headerShown: false }} />
       </Stack>
       <StatusBar style="auto" />

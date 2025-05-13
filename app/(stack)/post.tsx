@@ -16,8 +16,10 @@ const PostView = () => {
         id: 0,
         username: 'Franco',
         title: 'Esto es un post',
-        imageUrl: ''
+        imageUrl: '',
+        userId: 0
     });
+
     const [morePosts, setMorePosts] = useState<UserPost[]>([]);
 
     const getPostData = async () => {
@@ -59,6 +61,7 @@ const PostView = () => {
                 username={postData.username}
                 title={postData.title}
                 imageUrl={postData.imageUrl}
+                userId={postData.userId}
             />
             <FlatList
                 data={morePosts}

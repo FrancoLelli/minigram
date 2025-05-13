@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from 'react'
-import { FlatList, Image, StyleSheet, TouchableOpacity } from 'react-native'
+import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
-import InputSearch from '@/components/Search/InputSearch'
+import CommonInput from '@/components/Common/CommonInput'
 import { UserPost } from '@/types/models'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Link } from 'expo-router'
 
 const Search = () => {
   const [cachedPhotos, setCachedPhotos] = useState<UserPost[]>([]);
+  const [searchValue, setSearchValue] = useState<string>('')
+  const [filteredResults, setFilteredResults] = useState<UserPost[]>([]);
 
   const getCachedPhotos = async () => {
     try {
-      //const cachedData = await AsyncStorage.getItem('photos');
       const cachedData = await AsyncStorage.getItem('data');
       if (cachedData) {
         setCachedPhotos(JSON.parse(cachedData));
@@ -22,21 +23,58 @@ const Search = () => {
     }
   };
 
+  const filterResults = () => {
+    if (searchValue.trim() === '') {
+      setFilteredResults([]);
+      return;
+    }
+
+    const filtered = cachedPhotos.filter(item =>
+      item.username?.toLowerCase().includes(searchValue.toLowerCase())
+    );
+
+    setFilteredResults(filtered);
+  }
+
   useEffect(() => {
     getCachedPhotos()
   }, [])
 
+  useEffect(() => {
+    filterResults()
+  }, [searchValue])
+
   const ImageItem = ({ item }: { item: UserPost }) => (
     <Link href={`/post?id=${item.id}`} asChild>
       <TouchableOpacity style={styles.imageContainer}>
-        <Image source={{ uri: "https://picsum.photos/100/200" }} style={styles.image} />
+        <Image source={{ uri: `https://picsum.photos/seed/${item.id}/900/500` }} style={styles.image} />
+      </TouchableOpacity>
+    </Link>
+  );
+
+  const ResultItem = ({ item }: { item: UserPost }) => (
+    <Link href={`/users-profile?id=${item.id}`} asChild>
+      <TouchableOpacity style={styles.resultItem}>
+        <Text style={styles.resultText}>{item?.username}</Text>
       </TouchableOpacity>
     </Link>
   );
 
   return (
     <SafeAreaView style={{ flex: 1, marginTop: 20 }}>
-      <InputSearch text={'hola'} onChangeText={() => { }} />
+      <View style={styles.inputContainer}>
+        <CommonInput placeholder='Buscar...' value={searchValue} onChangeText={setSearchValue} />
+      </View>
+
+      {searchValue.trim().length > 0 && filteredResults.length > 0 && (
+        <FlatList
+          data={filteredResults}
+          renderItem={ResultItem}
+          keyExtractor={(item) => item.id.toString()}
+          style={styles.resultsList}
+        />
+      )}
+
       <FlatList
         data={cachedPhotos}
         renderItem={ImageItem}
@@ -51,6 +89,24 @@ const Search = () => {
 export default Search
 
 const styles = StyleSheet.create({
+  inputContainer: {
+    marginHorizontal: 10
+  },
+  resultsList: {
+    marginVertical: 10,
+    marginHorizontal: 10,
+    backgroundColor: '#f1f1f1',
+    borderRadius: 8,
+    maxHeight: 200,
+  },
+  resultItem: {
+    padding: 10,
+    borderBottomWidth: 1,
+    borderColor: '#ccc',
+  },
+  resultText: {
+    fontSize: 16,
+  },
   imageGrid: {
     padding: 10,
   },

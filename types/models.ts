@@ -3,6 +3,7 @@ export interface User {
   name: string;
   username: string;
   email: string;
+  password: string
 }
 
 export interface Photo {
@@ -21,6 +22,7 @@ export interface Post {
 
 export interface UserPost {
   id: number;
+  userId: number;
   title: string;
   imageUrl: string;
   username: string;

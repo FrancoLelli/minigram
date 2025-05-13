@@ -5,7 +5,7 @@ import { StyleSheet, View } from 'react-native';
 
 export default function TabLayout() {
   return (
-    <Tabs screenOptions={{ tabBarActiveTintColor: Colors.black }}>
+    <Tabs screenOptions={{ tabBarActiveTintColor: Colors.black, animation: 'shift' }}>
       <Tabs.Screen
         name="feed"
         options={{

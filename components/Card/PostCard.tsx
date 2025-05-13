@@ -1,18 +1,21 @@
 import { UserPost } from '@/types/models';
 import React from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { Colors } from '@/constants/Colors';
+import { Link } from 'expo-router';
 import ButtonCard from './ButtonCard';
 
 const PostCard: React.FC<UserPost> = ({ imageUrl, username, title, id }) => {
   return (
     <View style={styles.card}>
-      <View style={styles.profileContainer}>
-        <Image source={{ uri: "https://picsum.photos/100/100" }} style={styles.profileImg} />
-        <Text style={styles.username}>@{username}</Text>
-      </View>
-      <Image source={{ uri: "https://picsum.photos/900/500" }} style={styles.image} />
+      <Link href={`/users-profile?id=${id}`} asChild>
+        <TouchableOpacity style={styles.profileContainer}>
+          <Image source={{ uri: `https://i.pravatar.cc/150?u=${id}` }} style={styles.profileImg} />
+          <Text style={styles.username}>@{username}</Text>
+        </TouchableOpacity>
+      </Link>
+      <Image source={{ uri: `https://picsum.photos/seed/${id}/900/500` }} style={styles.image} />
       <Text style={styles.title}>{title}</Text>
       <View style={styles.actionsBanner}>
         <View style={styles.leftActionsBanner}>
