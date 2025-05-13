@@ -18,3 +18,10 @@ export interface Post {
   title: string;
   body: string;
 }
+
+export interface UserPost {
+  id: number;
+  title: string;
+  imageUrl: string;
+  username: string;
+}

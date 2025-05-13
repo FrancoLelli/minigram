@@ -1,5 +1,6 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Tabs } from 'expo-router';
+import { StyleSheet, View } from 'react-native';
 
 export default function TabLayout() {
   return (
@@ -7,7 +8,14 @@ export default function TabLayout() {
       <Tabs.Screen
         name="feed"
         options={{
-          title: 'Home',
+          title: 'Feed',
+          headerTitleAlign: 'center',
+          tabBarShowLabel: false,
+          headerRight: ({ tintColor }) => (
+            <View style={styles.headerRightContainer}>
+              <Ionicons name="chatbubble-outline" size={30} color={tintColor} />
+            </View>
+          ),
           tabBarIcon: ({color}) => <Ionicons name="home" size={32} color={color} />,
         }}
       />
@@ -16,9 +24,17 @@ export default function TabLayout() {
         options={{
           title: 'Profile',
           headerShown: false,
+          tabBarShowLabel: false,
           tabBarIcon: ({color}) => <Ionicons name="person" size={32} color={color} />,
         }}
       />
     </Tabs>
   );
 }
+
+const styles = StyleSheet.create({
+  headerRightContainer: {
+    marginRight: 10,
+    paddingRight: 10,
+  },
+});
