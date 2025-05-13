@@ -9,7 +9,7 @@ import SendButton from './SendButton';
 const PostCard: React.FC<UserPost> = ({ imageUrl, username, title, id }) => {
   return (
     <View style={styles.card}>
-      <Link href={`/profile?userId=${id}`}>
+      <Link href={`/profiles/users?userId=${id}`}>
         <View style={styles.profileContainer}>
           <Image source={{ uri: "https://picsum.photos/100/100" }} style={styles.profileImg} />
           <Text style={styles.username}>@{username}</Text>

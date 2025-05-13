@@ -8,7 +8,7 @@ const SendButton = () => {
     return (
         <TouchableOpacity onPress={() => setSended(!sended)} style={styles.button}>
             <Text style={[styles.text, sended && styles.sended]}>
-                {sended ? <Ionicons name="send" size={30} color="red" /> :
+                {sended ? <Ionicons name="send" size={30} color="black" /> :
                     <Ionicons name="send-outline" size={30} color="black" />}
             </Text>
         </TouchableOpacity>

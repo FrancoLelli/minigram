@@ -6,7 +6,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-const ProfileScreen = () => {
+const ProfileUsersScreen = () => {
     const { userId } = useLocalSearchParams();
     const [user, setUser] = useState<User | null>(null);
 
@@ -43,4 +43,4 @@ const styles = StyleSheet.create({
     loading: { padding: 20, textAlign: 'center' },
 });
 
-export default ProfileScreen;
+export default ProfileUsersScreen;

@@ -13,7 +13,7 @@ export default function TabLayout() {
           tabBarShowLabel: false,
           headerRight: ({ tintColor }) => (
             <View style={styles.headerRightContainer}>
-              <Ionicons name="chatbubble-outline" size={30} color={tintColor} />
+              <Ionicons name="chatbubble-outline" size={30} color={'black'} />
             </View>
           ),
           tabBarIcon: ({color}) => <Ionicons name="home" size={32} color={color} />,
