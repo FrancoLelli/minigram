@@ -54,6 +54,7 @@ const FeedScreen = () => {
                     username={item.username}
                     title={item.title}
                     imageUrl={item.imageUrl}
+                    userId={item.userId}
                 />
             )}
         />

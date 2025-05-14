@@ -1,5 +1,6 @@
 import CommonInput from '@/components/Common/CommonInput';
 import { Colors } from '@/constants/Colors';
+import { useAuth } from '@/context/auth';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
@@ -9,12 +10,23 @@ const LoginScreen = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
+    const { login } = useAuth()
+
     const router = useRouter()
 
-    const handleLogin = () => {
-        router.replace('/(tabs)/feed'); 
-    };
+    const handleLogin = async () => {
+        const data = {
+            id: 0,
+            name: 'Franco',
+            username,
+            email: 'fran@gmail.com',
+            password
 
+        }
+
+        await login(data)
+        router.replace('/(tabs)/feed');
+    };
 
     return (
         <KeyboardAvoidingView

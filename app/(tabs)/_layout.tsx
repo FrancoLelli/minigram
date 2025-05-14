@@ -1,9 +1,20 @@
 import { Colors } from '@/constants/Colors';
+import { useAuth } from '@/context/auth';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { Tabs } from 'expo-router';
-import { StyleSheet, View } from 'react-native';
+import { Redirect, Tabs } from 'expo-router';
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
 
 export default function TabLayout() {
+  const { user, isLoading } = useAuth();
+
+  if (isLoading) {
+    return <ActivityIndicator color={Colors.black} size="large" style={{ flex: 1 }} />;
+  }
+
+  if (!user) {
+    return <Redirect href="/(stack)/login" />;
+  }
+
   return (
     <Tabs screenOptions={{ tabBarActiveTintColor: Colors.black, animation: 'shift' }}>
       <Tabs.Screen

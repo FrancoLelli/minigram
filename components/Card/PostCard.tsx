@@ -3,19 +3,22 @@ import React from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { Colors } from '@/constants/Colors';
-import { Link } from 'expo-router';
+import { useRouter } from 'expo-router';
 import ButtonCard from './ButtonCard';
 
-const PostCard: React.FC<UserPost> = ({ imageUrl, username, title, id }) => {
+interface PostCardProps extends UserPost {
+  fullPost?: boolean;
+}
+
+const PostCard: React.FC<PostCardProps> = ({ imageUrl, username, title, id, fullPost = false }) => {
+  const router = useRouter();
   return (
     <View style={styles.card}>
-      <Link href={`/users-profile?id=${id}`} asChild>
-        <TouchableOpacity style={styles.profileContainer}>
-          <Image source={{ uri: `https://i.pravatar.cc/150?u=${id}` }} style={styles.profileImg} />
-          <Text style={styles.username}>@{username}</Text>
-        </TouchableOpacity>
-      </Link>
-      <Image source={{ uri: `https://picsum.photos/seed/${id}/900/500` }} style={styles.image} />
+      <TouchableOpacity onPress={() => router.push(`/users-profile?id=${id}`)} style={styles.profileContainer}>
+        <Image source={{ uri: `https://i.pravatar.cc/150?u=${id}` }} style={styles.profileImg} />
+        <Text style={styles.username}>@{username}</Text>
+      </TouchableOpacity>
+      <Image source={{ uri: `https://picsum.photos/seed/${id}/900/500` }} style={[styles.image, { height: fullPost ? 500 : 300 }]} />
       <Text style={styles.title}>{title}</Text>
       <View style={styles.actionsBanner}>
         <View style={styles.leftActionsBanner}>
@@ -50,7 +53,6 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '100%',
-    height: 300,
     marginVertical: 10,
   },
   title: {

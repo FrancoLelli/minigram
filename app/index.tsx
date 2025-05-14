@@ -2,6 +2,6 @@ import { Redirect } from "expo-router";
 
 export default function App() {
   return (
-    <Redirect href={'/(stack)/login'} />
+    <Redirect href={'/(tabs)/feed'} />
   );
 }

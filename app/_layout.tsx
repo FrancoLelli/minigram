@@ -1,3 +1,4 @@
+import { AuthProvider } from '@/context/auth';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
@@ -13,15 +14,15 @@ export default function RootLayout() {
   }
 
   return (
-    <>
+    <AuthProvider>
       <Stack>
-        <Stack.Screen name="(stack)/login" options={{ headerShown: false }} />
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="(stack)/post" options={{ headerTitle: '', headerBackTitle: 'Volver'}} />
-        <Stack.Screen name="(stack)/users-profile" options={{ headerTitle: '', headerBackTitle: 'Volver'}} />
+        <Stack.Screen name="(stack)/login" options={{ headerShown: false }} />
+        <Stack.Screen name="(stack)/post" options={{ headerTitle: '', headerBackTitle: 'Volver' }} />
+        <Stack.Screen name="(stack)/users-profile" options={{ headerTitle: '', headerBackTitle: 'Volver' }} />
         <Stack.Screen name="+not-found" options={{ headerShown: false }} />
       </Stack>
       <StatusBar style="auto" />
-    </>
+    </AuthProvider>
   );
 }

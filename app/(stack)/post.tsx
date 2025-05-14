@@ -1,16 +1,14 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useLocalSearchParams } from 'expo-router/build/hooks';
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, FlatList, Image, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
 
 import PostCard from '@/components/Card/PostCard';
 import { Colors } from '@/constants/Colors';
 import { UserPost } from '@/types/models';
-import { Link } from 'expo-router';
 
 const PostView = () => {
     const { id } = useLocalSearchParams();
-
     const [loading, setLoading] = useState(true);
     const [postData, setPostData] = useState<UserPost>({
         id: 0,
@@ -20,18 +18,11 @@ const PostView = () => {
         userId: 0
     });
 
-    const [morePosts, setMorePosts] = useState<UserPost[]>([]);
-
     const getPostData = async () => {
         try {
             const cacheData: any = await AsyncStorage.getItem('data');
-
             const cachePost = JSON.parse(cacheData).find((userPost: UserPost) => userPost.id === Number(id));
-
-            const cacheMorePosts = JSON.parse(cacheData).filter((userPost: UserPost) => userPost.id !== Number(id));
-
             setPostData(cachePost);
-            setMorePosts(cacheMorePosts);
             setLoading(false);
         } catch (error) {
             console.error('No se pudo obtener la información del post', error);
@@ -46,14 +37,6 @@ const PostView = () => {
         return <ActivityIndicator color={Colors.black} size="large" style={{ flex: 1 }} />;
     }
 
-    const ImageItem = ({ item }: { item: UserPost }) => (
-        <Link href={`/post?id=${item.id}`} asChild>
-            <TouchableOpacity style={styles.imageContainer}>
-                <Image source={{ uri: "https://picsum.photos/100/100" }} style={styles.image} />
-            </TouchableOpacity>
-        </Link>
-    );
-
     return (
         <View style={{ flex: 1 }}>
             <PostCard
@@ -62,13 +45,7 @@ const PostView = () => {
                 title={postData.title}
                 imageUrl={postData.imageUrl}
                 userId={postData.userId}
-            />
-            <FlatList
-                data={morePosts}
-                renderItem={ImageItem}
-                keyExtractor={(item) => item.id.toString()}
-                numColumns={3}
-                contentContainerStyle={styles.imageGrid}
+                fullPost
             />
         </View>
     );

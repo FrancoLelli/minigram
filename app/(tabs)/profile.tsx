@@ -1,28 +1,23 @@
 // app/profile.tsx
-import { getUsers } from '@/services/api';
-import { User } from '@/types/models';
-import { useLocalSearchParams } from 'expo-router';
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { useAuth } from '@/context/auth';
+import { useRouter } from 'expo-router';
+import React, { useEffect } from 'react';
+import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 const ProfileScreen = () => {
-    const { userId } = useLocalSearchParams();
-    const [user, setUser] = useState<User | null>(null);
+    const { user, logout } = useAuth()
+    const router = useRouter();
 
     useEffect(() => {
-        const loadUser = async () => {
-            const users = await getUsers();
-            const found = users.find((u) => u.id === Number(userId));
-            setUser(found || null);
-        };
-
-        if (userId) {
-            loadUser();
+        if (!user) {
+            router.replace('/(stack)/login');
         }
-    }, [userId]);
+    }, [user]);
 
-    if (!user) return <Text style={styles.loading}>Cargando perfil...</Text>;
+    if (!user) return <ActivityIndicator color={Colors.black} size="large" style={{ flex: 1 }} />;
+
 
     return (
         <SafeAreaView style={{ flex: 1, marginTop: 20 }}>
@@ -31,6 +26,9 @@ const ProfileScreen = () => {
                 <Text style={styles.username}>@{user.username}</Text>
                 <Text style={styles.email}>{user.email}</Text>
             </View>
+            <TouchableOpacity onPress={logout}>
+                <Text>Cerrar sesion</Text>
+            </TouchableOpacity>
         </SafeAreaView>
     );
 };

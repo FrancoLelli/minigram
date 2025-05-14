@@ -5,12 +5,14 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import CommonInput from '@/components/Common/CommonInput'
 import { UserPost } from '@/types/models'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { Link } from 'expo-router'
+import { useRouter } from 'expo-router'
 
 const Search = () => {
   const [cachedPhotos, setCachedPhotos] = useState<UserPost[]>([]);
   const [searchValue, setSearchValue] = useState<string>('')
   const [filteredResults, setFilteredResults] = useState<UserPost[]>([]);
+
+  const router = useRouter();
 
   const getCachedPhotos = async () => {
     try {
@@ -45,19 +47,15 @@ const Search = () => {
   }, [searchValue])
 
   const ImageItem = ({ item }: { item: UserPost }) => (
-    <Link href={`/post?id=${item.id}`} asChild>
-      <TouchableOpacity style={styles.imageContainer}>
-        <Image source={{ uri: `https://picsum.photos/seed/${item.id}/900/500` }} style={styles.image} />
-      </TouchableOpacity>
-    </Link>
+    <TouchableOpacity onPress={() => router.push(`/post?id=${item.id}`)} style={styles.imageContainer}>
+      <Image source={{ uri: `https://picsum.photos/seed/${item.id}/900/500` }} style={styles.image} />
+    </TouchableOpacity>
   );
 
   const ResultItem = ({ item }: { item: UserPost }) => (
-    <Link href={`/users-profile?id=${item.id}`} asChild>
-      <TouchableOpacity style={styles.resultItem}>
-        <Text style={styles.resultText}>{item?.username}</Text>
-      </TouchableOpacity>
-    </Link>
+    <TouchableOpacity onPress={() => router.push(`/users-profile?id=${item.id}`)} style={styles.resultItem}>
+      <Text style={styles.resultText}>{item?.username}</Text>
+    </TouchableOpacity>
   );
 
   return (

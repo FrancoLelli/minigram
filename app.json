@@ -28,9 +28,9 @@
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/minigram.png",
-          "imageWidth": 200,
-          "backgroundColor": "#ffffff"
+          "image": "./assets/images/instagram-white.png",
+          "resizeMode": "contain",
+          "backgroundColor": "#000000"
         }
       ]
     ],
