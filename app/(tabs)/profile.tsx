@@ -1,8 +1,11 @@
 // app/profile.tsx
+import UserProfile from '@/components/Profile/UserProfile';
 import { useAuth } from '@/context/auth';
+import { UserPost } from '@/types/models';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
-import React, { useEffect } from 'react';
-import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 
@@ -10,35 +13,39 @@ const ProfileScreen = () => {
     const { user, logout } = useAuth()
     const router = useRouter();
 
+    const [images, setImages] = useState<any[]>([])
+    const [loading, setLoading] = useState<boolean>(true)
+
+    const getImagesUserLoged = async () => {
+        try {
+            const data = await AsyncStorage.getItem('data');
+            const posts = JSON.parse(data).filter((post: UserPost) => post.userId === user?.id);
+            setImages(posts);
+        } catch (error) {
+            console.error('Error al recuperar las imaganes del usuario logeado:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        getImagesUserLoged()
+    }, [])
+
     useEffect(() => {
         if (!user) {
             router.replace('/(stack)/login');
         }
     }, [user]);
 
-    if (!user) return <ActivityIndicator color={Colors.black} size="large" style={{ flex: 1 }} />;
-
+    if (!user || loading) return <ActivityIndicator color={Colors.black} size="large" style={{ flex: 1 }} />;
 
     return (
         <SafeAreaView style={{ flex: 1, marginTop: 20 }}>
-            <View style={styles.container}>
-                <Text style={styles.name}>{user.name}</Text>
-                <Text style={styles.username}>@{user.username}</Text>
-                <Text style={styles.email}>{user.email}</Text>
-            </View>
-            <TouchableOpacity onPress={logout}>
-                <Text>Cerrar sesion</Text>
-            </TouchableOpacity>
+            <UserProfile username={user.username} avatarId={user.id} userImages={images} />
         </SafeAreaView>
     );
 };
 
-const styles = StyleSheet.create({
-    container: { padding: 20 },
-    name: { fontSize: 24, fontWeight: 'bold', marginBottom: 5 },
-    username: { fontSize: 18, color: '#555' },
-    email: { fontSize: 16, color: '#888', marginTop: 10 },
-    loading: { padding: 20, textAlign: 'center' },
-});
 
 export default ProfileScreen;

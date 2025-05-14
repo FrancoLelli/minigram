@@ -7,6 +7,7 @@ import { ActivityIndicator, FlatList } from 'react-native';
 
 import PostCard from '@/components/Card/PostCard';
 import { Colors } from '@/constants/Colors';
+import { seedPostUser } from '@/data/seed';
 import { postUserHelper } from '@/helpers/postUserHelper';
 
 const FeedScreen = () => {
@@ -24,7 +25,10 @@ const FeedScreen = () => {
                 const users = await getUsers();
 
                 const data = postUserHelper(posts, photos, users);
-                await AsyncStorage.setItem('data', JSON.stringify(data));
+                const postsUserLoged = seedPostUser();
+                const dataWithLoggedUser = [...data, ...postsUserLoged];
+                
+                await AsyncStorage.setItem('data', JSON.stringify(dataWithLoggedUser));
                 setData(data);
             } else {
                 setData(JSON.parse(cacheData));

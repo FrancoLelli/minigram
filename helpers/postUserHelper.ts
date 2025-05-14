@@ -10,5 +10,6 @@ export const postUserHelper = (
     title: post.title,
     imageUrl: photos[i]?.url,
     username: users.find((u) => u.id === post.userId)?.username || 'Anonimo',
+    userId: users.find((u) => u.id === post.userId)?.id || 0,
   }));
 };

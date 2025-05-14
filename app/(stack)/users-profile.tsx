@@ -40,8 +40,9 @@ const ProfileScreen = () => {
     <SafeAreaView style={{ flex: 1 }}>
       <UserProfile
         username={userCachedData.username}
-        avatarId={userCachedData.id}
+        avatarId={userCachedData.userId}
         userImages={userImages}
+        userLoged
       />
     </SafeAreaView>
   );
@@ -54,5 +55,5 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-  },
+  }
 });

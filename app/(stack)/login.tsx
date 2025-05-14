@@ -15,8 +15,13 @@ const LoginScreen = () => {
     const router = useRouter()
 
     const handleLogin = async () => {
+        if (!username || !password) {
+            alert('Por favor, completa todos los campos.');
+            return;
+        }
+        
         const data = {
-            id: 0,
+            id: 999,
             name: 'Franco',
             username,
             email: 'fran@gmail.com',

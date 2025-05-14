@@ -10,12 +10,12 @@ interface PostCardProps extends UserPost {
   fullPost?: boolean;
 }
 
-const PostCard: React.FC<PostCardProps> = ({ imageUrl, username, title, id, fullPost = false }) => {
+const PostCard: React.FC<PostCardProps> = ({ imageUrl, username, title, id, userId, fullPost = false }) => {
   const router = useRouter();
   return (
     <View style={styles.card}>
       <TouchableOpacity onPress={() => router.push(`/users-profile?id=${id}`)} style={styles.profileContainer}>
-        <Image source={{ uri: `https://i.pravatar.cc/150?u=${id}` }} style={styles.profileImg} />
+        <Image source={{ uri: `https://i.pravatar.cc/150?u=${userId}` }} style={styles.profileImg} />
         <Text style={styles.username}>@{username}</Text>
       </TouchableOpacity>
       <Image source={{ uri: `https://picsum.photos/seed/${id}/900/500` }} style={[styles.image, { height: fullPost ? 500 : 300 }]} />
