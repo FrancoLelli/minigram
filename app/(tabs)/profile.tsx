@@ -18,8 +18,8 @@ const ProfileScreen = () => {
 
     const getImagesUserLoged = async () => {
         try {
-            const data = await AsyncStorage.getItem('data');
-            const posts = JSON.parse(data).filter((post: UserPost) => post.userId === user?.id);
+            const data= await AsyncStorage.getItem('data');
+            const posts = data ? JSON.parse(data).filter((post: UserPost) => post.userId === user?.id) : [];
             setImages(posts);
         } catch (error) {
             console.error('Error al recuperar las imaganes del usuario logeado:', error);
@@ -42,7 +42,7 @@ const ProfileScreen = () => {
 
     return (
         <SafeAreaView style={{ flex: 1, marginTop: 20 }}>
-            <UserProfile username={user.username} avatarId={user.id} userImages={images} />
+            <UserProfile username={user.username} avatarId={user.id} userImages={images} userLoged/>
         </SafeAreaView>
     );
 };

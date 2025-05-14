@@ -37,9 +37,9 @@ const UserProfile: React.FC<Props> = ({ username, avatarId, userImages, userLoge
                         <Text style={styles.posts}>{userImages.length} publicaciones</Text>
                     </View>
                 </View>
-                <TouchableOpacity style={styles.buttonLogout} onPress={handleLogout}>
+                {userLoged && <TouchableOpacity style={styles.buttonLogout} onPress={handleLogout}>
                     <Ionicons name="log-out-outline" size={20} color={Colors.white} />
-                </TouchableOpacity>
+                </TouchableOpacity>}
             </View>
             <FlatList
                 data={userImages}

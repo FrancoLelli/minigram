@@ -42,7 +42,7 @@ const ProfileScreen = () => {
         username={userCachedData.username}
         avatarId={userCachedData.userId}
         userImages={userImages}
-        userLoged
+        userLoged={false}
       />
     </SafeAreaView>
   );
